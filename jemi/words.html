@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+/* Style for the page */
+  body {
+    background-color: #3D5B59;
+	font-family: Helvetica, sans-serif;
+	color: white;
+  }
+  
+  /* Style for the round buttons */
+  .round-button {
+    width: 80px;
+    height: 30px;
+    background-color: #FCB5AC;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 10px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Button elements with words -->
+<p>People</p>
+<button class="round-button" onclick="speak('Bitch')">Bitch</button>
+<button class="round-button" onclick="speak('You')">You</button>
+<button class="round-button" onclick="speak('Friend')">Friend</button>
+<button class="round-button" onclick="speak('Jemi')">Jemi</button>
+<button class="round-button" onclick="speak('Together')">Together</button>
+<button class="round-button" onclick="speak('Person')">Person</button>
+
+<p>Things</p>
+<button class="round-button" onclick="speak('Food')">Food</button>
+<button class="round-button" onclick="speak('Cake')">Cake</button>
+<button class="round-button" onclick="speak('Drink')">Drink</button>
+<button class="round-button" onclick="speak('Chocolate')">Chocolate</button>
+
+<p>Actions</p>
+<button class="round-button" onclick="speak('Cuddle')">Cuddle</button>
+<button class="round-button" onclick="speak('Want')">Want</button>
+<button class="round-button" onclick="speak('Help')">Help</button>
+<button class="round-button" onclick="speak('Play')">Play</button>
+<button class="round-button" onclick="speak('See')">See</button>
+<button class="round-button" onclick="speak('Hear')">Hear</button>
+<button class="round-button" onclick="speak('Speak')">Speak</button>
+<button class="round-button" onclick="speak('Do')">Do</button>
+<button class="round-button" onclick="speak('Give')">Give</button>
+<button class="round-button" onclick="speak('Thank')">Thank</button>
+
+<p>Emotions</p>
+<button class="round-button" onclick="speak('Sad')">Sad</button>
+<button class="round-button" onclick="speak('Lonely')">Lonely</button>
+<button class="round-button" onclick="speak('Bored')">Bored</button>
+<button class="round-button" onclick="speak('Sleepy')">Sleepy</button>
+<button class="round-button" onclick="speak('An-ki')">Angy!</button>
+<button class="round-button" onclick="speak('Love')">Love</button>
+<button class="round-button" onclick="speak('Hate')">Hate</button>
+<button class="round-button" onclick="speak('Excited')">Excited</button>
+<button class="round-button" onclick="speak('Ouch')">Ouch</button>
+<button class="round-button" onclick="speak('Concerned')">Concerned</button>
+<button class="round-button" onclick="speak('Cold')">Cold</button>
+<button class="round-button" onclick="speak('Hot')">Hot</button>
+<button class="round-button" onclick="speak('Happy')">Happy</button>
+<button class="round-button" onclick="speak('Sorry')">Sorry</button>
+
+<p>Places</p>
+<button class="round-button" onclick="speak('Lap')">Lap</button>
+<button class="round-button" onclick="speak('Bed')">Bed</button>
+<button class="round-button" onclick="speak('Toilet')">Toilet</button>
+<button class="round-button" onclick="speak('Kitchen')">Kitchen</button>
+<button class="round-button" onclick="speak('Outside')">Outside</button>
+
+<p>Other</p>
+<button class="round-button" onclick="speak('Yes')">Yes</button>
+<button class="round-button" onclick="speak('No')">No</button>
+<button class="round-button" onclick="speak('And')">And</button>
+<button class="round-button" onclick="speak('Now')">Now</button>
+<button class="round-button" onclick="speak('Later')">Later</button>
+<button class="round-button" onclick="speak('Hi')">Hi</button>
+<button class="round-button" onclick="speak('Bye')">Bye</button>
+<button class="round-button" onclick="speak('More')">More</button>
+<button class="round-button" onclick="speak('What')">What</button>
+<button class="round-button" onclick="speak('Where')">Where</button>
+<button class="round-button" onclick="speak('Please')">Please</button>
+<button class="round-button" onclick="speak('Hey')">Hey!</button>
+<button class="round-button" onclick="speak('Good')">Good</button>
+<button class="round-button" onclick="speak('Bad')">Bad</button>
+<button class="round-button" onclick="speak('Wrong')">Wrong</button>
+
+<!-- Script to handle text-to-speech -->
+<script>
+function speak(text) {
+  if ('speechSynthesis' in window) {
+    var utterance = new SpeechSynthesisUtterance(text);
+    window.speechSynthesis.speak(utterance);
+  } else {
+    alert("Sorry, your browser doesn't support speech synthesis.");
+  }
+}
+</script>
+
+</body>
+</html>

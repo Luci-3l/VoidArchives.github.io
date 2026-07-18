@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>🎲 Nyunyu-chan's Random Song Oracle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0b0b1a 0%, #14142b 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, 'Poppins', sans-serif;
+            padding: 1.5rem;
+        }
+
+        .card {
+            max-width: 750px;
+            width: 100%;
+            background: rgba(20, 20, 45, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            padding: 2rem 1.8rem 2.5rem;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #e9c6ff, #b77eff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .sub {
+            color: #aaa9d4;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding-bottom: 0.4rem;
+        }
+
+        .song-card {
+            background: rgba(0, 0, 0, 0.55);
+            border-radius: 2rem;
+            padding: 2rem 1.2rem;
+            margin: 1.5rem 0 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .song-name {
+            font-size: 1.9rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: #ffffff;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            word-break: break-word;
+            margin-bottom: 0.85rem;
+        }
+
+        .artist-name {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #c9b6ff;
+            letter-spacing: -0.2px;
+            background: rgba(183, 126, 255, 0.15);
+            display: inline-block;
+            padding: 0.3rem 1.2rem;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+        }
+
+        .empty-state {
+            color: #b9b8e6;
+            font-style: italic;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+
+        button {
+            background: linear-gradient(95deg, #7c4dff, #b77eff);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-family: inherit;
+            color: white;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 20px rgba(106, 13, 173, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            background: linear-gradient(95deg, #916eff, #c89aff);
+            box-shadow: 0 12px 28px rgba(106, 13, 173, 0.6);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .footer-note {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #6b6a8b;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.2rem;
+        }
+
+        .counter-badge {
+            background: #00000055;
+            display: inline-block;
+            border-radius: 40px;
+            padding: 0.2rem 0.9rem;
+            font-size: 0.75rem;
+            color: #cdcaff;
+            margin-bottom: 0.8rem;
+        }
+
+        @media (max-width: 550px) {
+            .card {
+                padding: 1.5rem;
+            }
+            .song-name {
+                font-size: 1.5rem;
+            }
+            .artist-name {
+                font-size: 1rem;
+            }
+            button {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>🎧 nyunyu's random song</h1>
+    <div class="sub">✧ let the universe choose your next favourite ✧</div>
+
+    <div class="counter-badge" id="playlistSize">loading oracle...</div>
+
+    <div class="song-card" id="songDisplay">
+        <div class="empty-state">✨ press the button & receive a song ✨</div>
+    </div>
+
+    <button id="randomButton">
+        🎲  REVEAL SONG  🎲
+    </button>
+    <div class="footer-note">
+        🌙 from your Amazon Music archive — 390+ spells, memories & riffs
+    </div>
+</div>
+
+<script>
+    // ----------------------------------------------
+    // COMPLETE SONG LIST (390 unique tracks)
+    // generated from Nyunyu-chan's playlist
+    // format: [ "Song Name – Artist", ... ]
+    // ----------------------------------------------
+    const songsRaw = [
+        "Inner Beast – Phantom Elite",
+        "Enlighten – Sleeping Romance",
+        "Ad astra – Moonlight Haze",
+        "Alba – Sleeping Romance",
+        "Summer Son – Enemy Inside",
+        "The Invisible Force – Edenbridge",
+        "God Palace - Method of Inheritance- – Versailles Philharmonic Quintet",
+        "THE ADVENT MELODY – SKYWINGS",
+        "Tensei feat. Koiwai Kotori – Imperial Circus Dead Decadence",
+        "Mikansei no Tsubasa – Syu",
+        "Hyakkikyo - Pandemic Night Parade – Imperial Circus Dead Decadence",
+        "Suna No Oshiro – Kanon Wakeshima",
+        "Algol – REMINA",
+        "Trust No One – REMINA",
+        "Forever Misery – Aeonian Sorrow",
+        "Ultraviolet – Light Field Reverie",
+        "The Conjurer – Insomnium",
+        "House of Suns – REMINA",
+        "Ikikäärme – Oranssi Pazuzu",
+        "ASTR – Ison",
+        "MNSTR – Crown The Empire",
+        "Exit in Darkness – MONO",
+        "For You – Stream Of Passion",
+        "Johnny Ringo (Rerecorded Version) – Crown The Empire",
+        "Lullaby For The Undead – Snow White Blood",
+        "Paint It, Black – Ciara",
+        "Shape of my Heart – Oceans Ate Alaska",
+        "Johnny’s Rebellion – Crown The Empire",
+        "One Day The Only Butterflies Left Will Be In Your Chest As You March Towards Your Death – Bring Me The Horizon",
+        "The Sound of Silence – Disturbed",
+        "Mother Gaia – Stratovarius",
+        "Remains of Eden: II – Psycion Nine",
+        "The Greatest Gift of All – Edenbridge",
+        "I'm Not A Vampire (Revamped) – Falling In Reverse",
+        "Kingdom of Heaven Prt. 3 - The Antediluvian Universe - – Epica",
+        "Gateways – Dimmu Borgir",
+        "Lightbringer – Dimmu Borgir",
+        "Code of Life – Epica",
+        "Heavy Lies the Crown – Draconian",
+        "Pale Tortured Blue – Draconian",
+        "Deutschland – Rammstein",
+        "Claw Marks on the Throne – Draconian",
+        "Sorrow of Sophia – Draconian",
+        "The Morningstar – Draconian",
+        "Earendel – Sirenia",
+        "The Skeleton Key – Epica",
+        "Just a Thought – Gnarls Barkley",
+        "Muramasa – Periphery",
+        "Gaia – Epica",
+        "Nobody's Lives – Myrath",
+        "Wings of Destiny – Rhapsody",
+        "Emmeleia – Dead Can Dance",
+        "Burn – In This Moment",
+        "Blood – In This Moment",
+        "No Me Importa – In This Moment",
+        "Shadows Mourn – Aeonian Sorrow",
+        "The Divine Conspiracy – Epica",
+        "Stellar Tombs – Draconian",
+        "The Funeral Of Hearts (Radio edit) – HIM",
+        "The Land of New Hope – Timo Tolkki’s Avalon",
+        "October & April – The Rasmus",
+        "Demonheart – Luca Turilli (Band)",
+        "Heartkiller – HIM",
+        "Avalanche Anthem – Timo Tolkki’s Avalon",
+        "The Obsessive Devotion – Epica",
+        "Cease the Day – In The Woods...",
+        "Shine – Timo Tolkki’s Avalon",
+        "Beyond the Matrix – Epica",
+        "Once Upon a Nightmare – Epica",
+        "Ascension - Dream State Armageddon – Epica",
+        "The Holographic Principle - A Profound Understanding of Reality – Epica",
+        "Lilith – Ellise",
+        "Tear Down Your Walls – Epica",
+        "Agape – Dead Can Dance",
+        "All Becomes One – Vandroya",
+        "Anabasis – Dead Can Dance",
+        "Angina – Tristania",
+        "Change the Tide – Vandroya",
+        "Consign To Oblivion – Epica",
+        "Design Your Universe – Epica",
+        "The Enigma Of Life – Sirenia",
+        "Eppur si muove – Haggard",
+        "Erase Me – Elysion",
+        "Equally Destructive – After Forever",
+        "The Essence of Silence – Epica",
+        "Everlasting – Damnation Angels",
+        "Godsends – Timo Tolkki’s Avalon",
+        "Heavenly Inferno – Shellyz Raven",
+        "I, The Creator – Monuments",
+        "I, the Destroyer – Monuments",
+        "I'll Sing You Home – Timo Tolkki’s Avalon",
+        "Kiko – Dead Can Dance",
+        "The Last Free Land – Vandroya",
+        "Monochroma – Shellyz Raven",
+        "My<Dsmbr (Mickey P. Reanimation) [feat. Kelli Alij] – Linkin Park",
+        "Never Forever – Elysion",
+        "Nihilist – Shellyz Raven",
+        "No Oblivion for Eternity – Vandroya",
+        "The Observer – Haggard",
+        "The Phantom Agony – Epica",
+        "Per Aspera Ad Astra – Haggard",
+        "The Quantum Enigma - Kingdom of Heaven, Pt. II – Epica",
+        "Scarlet – Periphery",
+        "Sick Like Me – In This Moment",
+        "Sleep – Poets Of The Fall",
+        "Ten Black Roses – The Rasmus",
+        "This World of Yours – Vandroya",
+        "UGLY – THE GAZETTE",
+        "We Will Find a Way – Timo Tolkki’s Avalon",
+        "Wheel of Destiny – Epica",
+        "When Heaven Decides to Call – Vandroya",
+        "Whore – In This Moment",
+        "Who I Am – After Forever",
+        "Bhavanyastakam – Craig Pruess",
+        "La Maritza – Therion",
+        "House of the Rising Sun – Oceans of Slumber",
+        "The Marriage of Attaris – Draconian",
+        "Hurricane – Thirty Seconds To Mars",
+        "Thanatos Kyrie – Aeonian Sorrow",
+        "Ave End – Aeonian Sorrow",
+        "Noli Timere – The Foreshadowing",
+        "Freedom - The Wolves Within - – Epica",
+        "Omega - Sovereign of the Sun Spheres - – Epica",
+        "Twilight Reverie - The Hypnagogic State - – Epica",
+        "Synergize - Manic Manifest - – Epica",
+        "Rivers – Epica",
+        "True Love – Eivør",
+        "Boxes – Eivør",
+        "Falling Free – Eivør",
+        "Unbroken – Beyond The Black",
+        "Don't Go (feat. Lights) – Bring Me The Horizon",
+        "All Roads Lead Home – Light Field Reverie",
+        "Another World – Light Field Reverie",
+        "The Oldest House – Light Field Reverie",
+        "Unleashed – Epica",
+        "The Call – Rotting Christ",
+        "Equus – Ne Obliviscaris",
+        "essence – oh, the joy.",
+        "Melancholy – Swallow The Sun",
+        "What Else Is There? – Mortemia",
+        "Fables – LOR3L3I",
+        "I Found You – LOR3L3I",
+        "Leave Me – LOR3L3I",
+        "We Are the Heroes – Gothminister",
+        "The Old Hurt of Being Left Behind – Seven Spires",
+        "Outer Space – Ad Infinitum",
+        "Don't Let Go – Stream Of Passion",
+        "Inferno – Ad Infinitum",
+        "Raid The Universe – Elysion",
+        "Existence – Mortal Love",
+        "Obsidian – REMINA",
+        "The Endless City – REMINA",
+        "A Return to the Earth Below – Oceans of Slumber",
+        "Icarus Signal – REMINA",
+        "Don't Save Me – Noctura",
+        "Once Beautiful – The Last Dance",
+        "Black on Black – Ardours",
+        "Swing of Death – Jorn Lande",
+        "Head – Lovers and Liars",
+        "Angels Are Calling – Ari Koivunen",
+        "Decode – Barbie Sailers & Violet Orlandi",
+        "All My Love – The Eden House",
+        "We Are the Ones – Timo Tolkki’s Avalon",
+        "The Last Eden – The Everdawn",
+        "My Love Will Never Die – AG",
+        "When You Hurt Me the Most – Stream Of Passion",
+        "Dark Skies – Enemy Inside",
+        "Sally's Song – Amy Lee",
+        "Dance of Time – Walk in Darkness",
+        "I Dream of You – Bare Infinity",
+        "My Requiem – Trees of Eternity",
+        "Far Away – Elysion",
+        "A Beautiful Lie – Thirty Seconds To Mars",
+        "Broken Parts – Smash Into Pieces",
+        "Resistance – Muse",
+        "A Match Into Water – Pierce The Veil",
+        "THE DEATH OF PEACE OF MIND – Bad Omens",
+        "Caged (From \"Savaged\") – Noctura",
+        "Enslaved by a Dream – Infected Rain",
+        "Savior – Lindsay Schoolcraft",
+        "Where Butterflies Never Die – Broken Iris",
+        "Forgotten – The Plot In You",
+        "The Measure – SyCAMour",
+        "Blue Seasons – Elysion",
+        "The Promise – Globus",
+        "No Time to Die – Barbie Sailers & Violet Orlandi",
+        "Nemo (Remastered) – Nightwish",
+        "Demons – Jacob Lee",
+        "Broken Pieces – Apocalyptic",
+        "The Phantom Of The Opera – Nightwish",
+        "Vem Kan Segla – Midnattsol",
+        "Stabbing In The Dark – Ice Nine Kills",
+        "Holding on to Smoke – Motionless In White",
+        "The Nature of the Beast – Ice Nine Kills",
+        "The One You Feed – Crown The Empire",
+        "Disguise – Motionless In White",
+        "Cyberhex – Motionless In White",
+        "Bad Decisions – RedHook",
+        "Split Personality – Hot Milk",
+        "Lost It All – Black Veil Brides",
+        "Silence Speaks (feat. Oli Sykes) – While She Sleeps",
+        "Back To Me – Of Mice And Men",
+        "i don't know what to say – Bring Me The Horizon",
+        "The In-Between – In This Moment",
+        "As Above, So Below – In This Moment",
+        "Stand My Ground – Within Temptation",
+        "What Lies Ahead – Semblant",
+        "Let Us Burn – Within Temptation",
+        "All I Need – Within Temptation",
+        "The Love of God – Lord Of The Lost",
+        "Miss Machine – Lord Of The Lost",
+        "Prison – Lord Of The Lost",
+        "The Black – Asking Alexandria",
+        "Lucifer – Blutengel",
+        "Where Did It Go? – Asking Alexandria",
+        "Love Comes Home – Les Friction",
+        "I Remember (feat. Emily Valentine) – Les Friction",
+        "Rhapsody of Fire – Anthriel",
+        "I Am Only One – We Are The Fallen",
+        "Şeytanu Akbar – Ignea",
+        "Abandoned (feat. Mari Youngblood) – Kamelot",
+        "Animal – Chase Holfelder",
+        "Roots – In This Moment",
+        "This Night – Black Lab",
+        "Disenchantment – Ignea",
+        "My Nocturnal Serenade – Yohio",
+        "Say My Name – Within Temptation",
+        "Blessed with a Curse – Bring Me The Horizon",
+        "I Once Had Wings – Dark Sarah",
+        "Destroyed (Demo Version) – Within Temptation",
+        "Who Will Save You Now – Les Friction",
+        "Sinematic – Motionless In White",
+        "This Is a Call – Les Friction",
+        "All the Way / 4U – Poets Of The Fall",
+        "Wicked Game – Ursine Vulpine",
+        "Scars – Michael Malarkey",
+        "Narcissistic Cannibal – Earlyrise",
+        "Tears Don’t Fall – Bullet For My Valentine",
+        "Deep Cold – Omnium Gatherum",
+        "War – Poets Of The Fall",
+        "Naxxar – Lord Of The Lost",
+        "Heal My Wounds – Poets Of The Fall",
+        "Louder Than Words – Les Friction",
+        "The Howling – Within Temptation",
+        "Let Her Go – Within Temptation",
+        "Like a Parasite – Anniskay",
+        "Dark Matter – Les Friction",
+        "Erebus – REMINA",
+        "Black Halo – Lord Of The Lost",
+        "Animals – Architects",
+        "Obey – Bring Me The Horizon",
+        "Heavenly – Brainstorm",
+        "Love Me Forever – Beyond The Black",
+        "Frozen – Exit Eden",
+        "Carnival of Rust – Poets Of The Fall",
+        "Parasite Eve – Bring Me The Horizon",
+        "Drowning in Darkness – Beyond The Black",
+        "Can You Feel My Heart – Bring Me The Horizon",
+        "Stossgebet – Powerwolf",
+        "Glassy Sky (From \"Tokyo Ghoul\") – AmaLee",
+        "Mercy – Hurts",
+        "Hand of Sorrow – Within Temptation",
+        "Revolution – Kamelot",
+        "Wings of Freedom – Epica",
+        "Holy Man – In This Moment",
+        "Catholic in the Morning...Satanist At Night – Powerwolf",
+        "Come with Me – Xandria",
+        "I Won't Surrender – Beyond The Black",
+        "Meds – Placebo",
+        "Sweet Atonement – Xandria",
+        "Sleepwalking – Bring Me The Horizon",
+        "Morgana – Lord Of The Lost",
+        "After the Fall – Chelsea Wolfe",
+        "Megitsune – BABYMETAL",
+        "Crucify Me (feat. Lights) – Bring Me The Horizon",
+        "Deathbeds – Bring Me The Horizon",
+        "White Robe Fly Dream Remix – t.A.T.u.",
+        "Leviathan – Ignea",
+        "Persephone (The Gathering of Flowers) (Remastered) – Dead Can Dance",
+        "In My Arms – Ancient Bards",
+        "O Father O Satan O Sun! – Behemoth",
+        "She and Her Darkness – Diary of Dreams",
+        "Forevermore – Lord Of The Lost",
+        "Six Days – Cellar Darling",
+        "Danse Macabre – Delain",
+        "Black Undertow – Evergrey",
+        "I Am the Way – Marko Hietala",
+        "From the Grave – Eleine",
+        "Throne – Bring Me The Horizon",
+        "Big Bad Wolf – In This Moment",
+        "Dying Sun – REMINA",
+        "SAY10 – Marilyn Manson",
+        "Standing Alone – In This Moment",
+        "The Racing Heart – Katatonia",
+        "Ocean of Tears – Michael Kiske & Amanda Somerville",
+        "Bittersweet – Allen Lande",
+        "Inamorata – VAS",
+        "Moksha – VAS",
+        "Evolution (The Grand Design) – Symphony X",
+        "My Heart Is Broken – Evanescence",
+        "Don't Leave Me Behind – We Are The Fallen",
+        "Bury Me Alive – We Are The Fallen",
+        "Masters of Destiny – Delain",
+        "Enshrined in My Memory – Timo Tolkki’s Avalon",
+        "Tear The World Down – We Are The Fallen",
+        "Sacrificium – Xandria",
+        "Haraldskvædi – Leaves' Eyes",
+        "The Great Tribulation (feat. Fleshgod Apocalypse) – Epica",
+        "Never Enough – Anniskay",
+        "Metamorphose – Lareine",
+        "The Revenant Choir – Versailles Philharmonic Quintet",
+        "STRUGGLE FOR THE FREEDOM FLAG – Galneryus",
+        "The Host of Seraphim (Remastered) – Dead Can Dance",
+        "Adrenaline – In This Moment",
+        "Creatures from the Mud – Shokran",
+        "Holding You Deep Inside – Narwhal Tusk",
+        "Deny, Deny – Narwhal Tusk",
+        "Half God Half Devil – In This Moment",
+        "Song for Sorrow and Woe – Xandria",
+        "Unfaithful – Exit Eden",
+        "Medusa – Mandragora Scream",
+        "Hekate (En Erebos Phos) – Mandragora Scream",
+        "Anubis – Mandragora Scream",
+        "Lucifer's Ballade – Mandragora Scream",
+        "Lucifer's Lullaby – Mandragora Scream",
+        "Love for Endymion – Mandragora Scream",
+        "Don't Say A Word (Live At Wacken 2013) – Sonata Arctica",
+        "STFU – Anniskay",
+        "Palace of Dreams – Leah",
+        "Days Before You Died – Volturian",
+        "Broken – Stream Of Passion",
+        "The Killing Joke – Volturian",
+        "Blow Your Trumpets Gabriel – Behemoth",
+        "The Satanist – Behemoth",
+        "Winter Land – Sirenia",
+        "Wintry Heart – Sirenia",
+        "Fireball – Marshmello",
+        "DOGMA – Crown The Empire",
+        "The Fallout – Crown The Empire",
+        "Menace – Crown The Empire",
+        "Aftermath – Crown The Empire",
+        "Are You Coming With Me? – Crown The Empire",
+        "Graveyard Souls – Crown The Empire",
+        "Rise of the Runaways – Crown The Empire",
+        "My Understandings – Of Mice And Men",
+        "Dream Away – Keith Wallen",
+        "Ocean – Leah",
+        "Renaissance (From \"Medici: Masters of Florence\") – Paolo Buonvino",
+        "The Ghost in Me - Danse Macabre – Epica",
+        "Death and the Maiden – F. Schubert",
+        "Sing Like A Siren – Within Temptation",
+        "Love You to Death – Kamelot",
+        "Deceiver of Fools – Within Temptation",
+        "Hijo de la Luna – Haggard",
+        "Leverage – Lyriel",
+        "Aaj – Bloodywood",
+        "Zeit – Rammstein",
+        "I Fade – Leah",
+        "Edge of the Blade – Epica",
+        "Aeterna – Simone Simons",
+        "Ragnarok – Periphery",
+        "Misplaced Among The Angels – Avantasia",
+        "Follow In The Cry – After Forever",
+        "Dreamflight – After Forever",
+        "Knightrider of Doom (Re-Recorded) – Rhapsody Of Fire",
+        "Bloodmoon – Kamelot",
+        "Don't Say a Word – Xandria",
+        "The Bonding – Edenbridge",
+        "Star-Crossed Dreamer – Edenbridge",
+        "Death Is Not the End – Edenbridge",
+        "Arcana – Edenbridge",
+        "Cross the Divide – Epica",
+        "The Psalm of Lydia – Nevermore",
+        "Born – Nevermore",
+        "Final Product – Nevermore",
+        "This Goddess Endeavor – Nevermore",
+        "Sentient 6 – Nevermore",
+        "Paradise Lost – Symphony X",
+        "My Pledge Of Allegiance #1 – Floor Jansen",
+        "The Final Lullaby (feat. Shining) – Epica",
+        "Encounter at Chinorot Maze – Diabulus In Musica",
+        "The Rabbit Of The Moon – Moonlight Haze",
+        "Arisé – Anette Olzon",
+        "Elettroschoc – Matia Bazar",
+        "Montagne verdi – Marcella Bella",
+        "Per te qualcosa ancora – Pooh",
+        "Ti Scatterò Una Foto – Tiziano Ferro",
+        "Breathe (Until We Are No More) – Moonspell",
+        "Litany Of The Fallen – Therion",
+        "The Void – Swallow The Sun"
+    ];
+
+    // Ensure unique (but our dedupe is perfect)
+    const songList = [...new Map(songsRaw.map(s => [s, s])).values()];
+    const totalSongs = songList.length;
+
+    // DOM elements
+    const displayDiv = document.getElementById('songDisplay');
+    const playlistSpan = document.getElementById('playlistSize');
+    const randomBtn = document.getElementById('randomButton');
+
+    playlistSpan.textContent = `🎼 ${totalSongs} songs in the oracle`;
+
+    function getRandomSong() {
+        const randomIndex = Math.floor(Math.random() * totalSongs);
+        const fullLine = songList[randomIndex];
+        // Split at " – " (en dash with spaces) 
+        const separatorIndex = fullLine.lastIndexOf(' – ');
+        if (separatorIndex === -1) {
+            // fallback
+            return { song: fullLine, artist: "✨ mystical being" };
+        }
+        const songName = fullLine.substring(0, separatorIndex);
+        const artistName = fullLine.substring(separatorIndex + 3);
+        return { song: songName, artist: artistName };
+    }
+
+    function updateDisplay() {
+        const { song, artist } = getRandomSong();
+        displayDiv.innerHTML = `
+            <div class="song-name">🎧 ${escapeHtml(song)}</div>
+            <div class="artist-name">${escapeHtml(artist)}</div>
+        `;
+    }
+
+    // simple escape to avoid any XSS (not strictly needed but safe)
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    randomBtn.addEventListener('click', () => {
+        updateDisplay();
+        // little playful vibration if supported? optional, but cool
+        if (navigator.vibrate) navigator.vibrate(50);
+    });
+
+    // show initial random song on page load
+    updateDisplay();
+</script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+/* ===== CSS Custom Properties ===== */
+/* LIGHT THEME — Angels Whisper inspired */
+/* Palette: https://coolors.co/ff4a74-fb8aab-ffe6ea-f13e77-fe7ca0 */
+:root {
+    /* Core colors */
+    --bg: #ffe6ea;
+    --bg-card: #ffffff;
+    --text: #4a2025;
+    --text-light: #7a4a50;
+    --accent: #f13e77;
+    --accent-soft: #fb8aab;
+    --accent-light: #fe7ca0;
+    --accent-dark: #c92050;
+    --accent-warm: #ff4a74;
+
+    /* UI elements */
+    --nav-bg: rgba(255, 255, 255, 0.75);
+    --shadow: 0 4px 20px rgba(241, 62, 119, 0.08);
+    --shadow-hover: 0 8px 30px rgba(241, 62, 119, 0.14);
+    --radius: 16px;
+    --border: 1px solid rgba(241, 62, 119, 0.12);
+    --font-body: 'Georgia', 'Times New Roman', serif;
+    --font-heading: 'Georgia', 'Times New Roman', serif;
+
+    /* Theme toggle */
+    --toggle-bg: #fb8aab;
+    --toggle-icon: '☀️';
+    --gradient-1: rgba(255, 74, 116, 0.06);
+    --gradient-2: rgba(254, 124, 160, 0.04);
+}
+
+/* DARK THEME — Night Garden */
+/* Palette: https://coolors.co/palette/f2a09f-140e1b-383d73-6d639c-9d7498 */
+[data-theme="dark"] {
+    --bg: #140e1b;
+    --bg-card: #1e1628;
+    --text: #e8d5e0;
+    --text-light: #b8a0b5;
+    --accent: #f2a09f;
+    --accent-soft: #6d639c;
+    --accent-light: #9d7498;
+    --accent-dark: #e08080;
+    --accent-warm: #f2a09f;
+
+    --nav-bg: rgba(20, 14, 27, 0.8);
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.5);
+    --border: 1px solid rgba(109, 99, 156, 0.25);
+    --toggle-bg: #383d73;
+    --toggle-icon: '🌙';
+    --gradient-1: rgba(242, 160, 159, 0.04);
+    --gradient-2: rgba(109, 99, 156, 0.06);
+}
+
+/* ===== Reset & Base ===== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-image:
+        radial-gradient(ellipse at 20% 10%, var(--gradient-1) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 90%, var(--gradient-2) 0%, transparent 60%);
+    background-attachment: fixed;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* ===== Typography ===== */
+h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    color: var(--accent);
+    font-weight: normal;
+    transition: color 0.5s ease;
+}
+
+.site-title {
+    font-size: 1.8rem;
+    letter-spacing: 0.02em;
+}
+
+.subtitle {
+    color: var(--text-light);
+    font-style: italic;
+    font-size: 1rem;
+    margin-top: -4px;
+    transition: color 0.5s ease;
+}
+
+/* ===== Theme Toggle Button ===== */
+.theme-toggle-wrapper {
+    position: fixed;
+    top: 1.2rem;
+    right: 1.5rem;
+    z-index: 100;
+}
+
+.theme-toggle {
+    background: var(--toggle-bg);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* The icon changes via CSS content based on theme */
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: var(--shadow-hover);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+/* ===== Header & Navigation ===== */
+header {
+    padding: 2rem 1.5rem 1rem;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--nav-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: var(--border);
+    transition: background 0.5s ease, border-color 0.5s ease;
+}
+
+.header-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+nav {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-light);
+    font-size: 0.95rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--accent-dark);
+    background: var(--accent-soft);
+}
+
+.nav-link.active {
+    color: var(--bg);
+    background: var(--accent-soft);
+    font-weight: bold;
+}
+
+/* ===== Main Content ===== */
+main {
+    flex: 1;
+    max-width: 750px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    width: 100%;
+}
+
+/* ===== Cards ===== */
+.welcome-card,
+.about-card,
+.blog-post-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+    border: var(--border);
+    transition: all 0.5s ease;
+}
+
+.welcome-card h2,
+.about-card h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.welcome-card p,
+.about-card p {
+    margin-bottom: 1rem;
+}
+
+.decorative-spiral {
+    text-align: center;
+    font-size: 3rem;
+    color: var(--accent-light);
+    margin-top: 1.5rem;
+    opacity: 0.6;
+    animation: gentle-spin 20s linear infinite;
+}
+
+@keyframes gentle-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ===== Post Cards Grid ===== */
+.posts-preview h2,
+.blog-posts h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+.post-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.2rem;
+}
+
+.post-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    border: var(--border);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+}
+
+.post-date {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-light);
+    margin-bottom: 0.5rem;
+}
+
+.post-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+}
+
+.post-card p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+/* ===== Blog Page Specific ===== */
+.blog-intro {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-light);
+}
+
+.blog-post-full {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+    border: var(--border);
+    transition: all 0.5s ease;
+}
+
+.blog-post-full .post-meta {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.post-category {
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    padding: 0.2rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.blog-post-full h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0.8rem;
+}
+
+.blog-post-full .post-body {
+    color: var(--text);
+    line-height: 1.8;
+}
+
+.blog-post-full .post-body p {
+    margin-bottom: 1.2rem;
+}
+
+.blog-post-full .post-body blockquote {
+    border-left: 3px solid var(--accent-soft);
+    padding-left: 1.2rem;
+    margin: 1.5rem 0;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.blog-post-divider {
+    text-align: center;
+    color: var(--accent-light);
+    font-size: 1.5rem;
+    margin: 1rem 0 2rem;
+    opacity: 0.5;
+}
+
+/* Template for adding new posts — visual indicator */
+.new-post-template {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    border: 2px dashed var(--accent-soft);
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--text-light);
+    transition: all 0.4s ease;
+}
+
+.new-post-template:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* ===== About Page Specific ===== */
+.about-content {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.about-text {
+    flex: 2;
+    min-width: 250px;
+}
+
+.about-image-placeholder {
+    flex: 1;
+    min-width: 150px;
+    display: flex;
+    justify-content: center;
+}
+
+.circle-frame {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 3px dashed var(--accent-soft);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-light);
+    font-size: 2.5rem;
+    background: var(--accent-soft);
+    transition: all 0.5s ease;
+}
+
+.circle-frame p {
+    font-size: 0.7rem;
+    margin-top: 0.3rem;
+    color: var(--text-light);
+}
+
+/* ===== Footer ===== */
+footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    border-top: var(--border);
+    margin-top: auto;
+    transition: all 0.5s ease;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 600px) {
+    .site-title {
+        font-size: 1.4rem;
+    }
+
+    .welcome-card,
+    .about-card,
+    .blog-post-full {
+        padding: 1.5rem;
+    }
+
+    .about-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .post-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .theme-toggle-wrapper {
+        top: 0.8rem;
+        right: 0.8rem;
+    }
+
+    .theme-toggle {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
+}

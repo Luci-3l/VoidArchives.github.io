@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✦ Nyunyu-chan · idea oracle</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Quicksand', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 30%, #1e1029, #0d0712);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+
+    .card {
+      max-width: 700px;
+      width: 100%;
+      background: rgba(30, 16, 41, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 3.5rem 1.5rem 3.5rem 1.5rem;
+      padding: 2.5rem 2rem 2.8rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(180, 130, 220, 0.2), 0 0 30px rgba(160, 80, 200, 0.2);
+      border: 1px solid rgba(200, 150, 255, 0.15);
+      transition: all 0.2s ease;
+    }
+
+    /* ——— header ——— */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1.8rem;
+      flex-wrap: wrap;
+    }
+
+    .header h1 {
+      font-size: 2.1rem;
+      font-weight: 400;
+      letter-spacing: 1px;
+      color: #e2d0f5;
+      text-shadow: 0 0 12px #b77ce0, 0 0 30px #7d3c9e;
+      background: linear-gradient(135deg, #e8d6ff, #c7a2f0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-family: 'Quicksand', 'Segoe UI', sans-serif;
+    }
+
+    .header .sub {
+      margin-left: auto;
+      font-size: 0.9rem;
+      color: #b595d0;
+      background: rgba(80, 40, 110, 0.35);
+      padding: 0.25rem 1rem;
+      border-radius: 40px;
+      backdrop-filter: blur(4px);
+      border: 1px solid #7b4f9e55;
+      letter-spacing: 0.3px;
+    }
+
+    /* ——— quote / mantra ——— */
+    .mantra {
+      font-size: 0.95rem;
+      color: #cbb0e6;
+      background: rgba(50, 25, 70, 0.5);
+      padding: 0.6rem 1.2rem;
+      border-radius: 60px;
+      display: inline-block;
+      backdrop-filter: blur(4px);
+      border: 1px solid #9d71c055;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 15px #3e1f5522;
+      font-style: italic;
+    }
+
+    .mantra span {
+      color: #e3c6ff;
+      font-weight: 500;
+    }
+
+    /* ——— idea display ——— */
+    .idea-box {
+      background: rgba(18, 8, 28, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 2rem 0.8rem 2rem 0.8rem;
+      padding: 2rem 1.8rem;
+      margin: 1.8rem 0 2.5rem;
+      border-left: 4px solid #b07cd9;
+      box-shadow: inset 0 0 30px #1f0d2e, 0 8px 20px rgba(0, 0, 0, 0.5);
+      transition: all 0.25s ease;
+      min-height: 130px;
+      display: flex;
+      align-items: center;
+    }
+
+    .idea-text {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      color: #f0e6fc;
+      font-weight: 350;
+      word-break: break-word;
+      text-shadow: 0 0 6px #9060b0;
+      letter-spacing: 0.2px;
+      width: 100%;
+    }
+
+    .idea-text::before {
+      content: "❀ ";
+      color: #be92e6;
+      font-size: 1.2rem;
+    }
+
+    /* ——— button ——— */
+    .button-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+
+    .btn-oracle {
+      background: linear-gradient(145deg, #2e1842, #1b0e26);
+      border: none;
+      padding: 1rem 2.6rem;
+      border-radius: 80px;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #e9d7fc;
+      letter-spacing: 2px;
+      box-shadow: 0 6px 0 #0d0513, 0 12px 30px #00000066, 0 0 20px #652b8b55;
+      border: 1px solid #a371c966;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: 0.12s linear;
+      backdrop-filter: blur(4px);
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    .btn-oracle:hover {
+      transform: scale(1.01);
+      background: linear-gradient(145deg, #3c2254, #26143a);
+      box-shadow: 0 4px 0 #0d0513, 0 16px 40px #00000088, 0 0 35px #8749b5;
+      border-color: #bf8fec;
+      color: #f7eeff;
+    }
+
+    .btn-oracle:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #0d0513, 0 8px 24px #00000088;
+    }
+
+    .btn-oracle i {
+      font-style: normal;
+      font-size: 1.8rem;
+      line-height: 1;
+      filter: drop-shadow(0 0 6px #a16ad0);
+    }
+
+    /* ——— counter / small ——— */
+    .footer-note {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: #7d5f99;
+      letter-spacing: 0.6px;
+      border-top: 1px dashed #4e306a55;
+      padding-top: 1.4rem;
+    }
+
+    .footer-note span {
+      background: #24163355;
+      padding: 0.15rem 0.9rem;
+      border-radius: 40px;
+      border: 1px solid #552f7755;
+    }
+
+    .footer-note .spiral {
+      color: #b185d0;
+    }
+
+    /* ——— responsive ——— */
+    @media (max-width: 500px) {
+      .card { padding: 1.8rem 1.2rem; }
+      .header h1 { font-size: 1.7rem; }
+      .idea-box { padding: 1.5rem 1rem; }
+      .idea-text { font-size: 1.1rem; }
+      .btn-oracle { padding: 0.8rem 1.8rem; font-size: 1.2rem; }
+    }
+
+    /* ✦ tiny sparkle ✦ */
+    .glow-text {
+      background: radial-gradient(circle at 30% 20%, #d9b6ff, #a167d0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body>
+  <div class="card" role="main">
+    <div class="header">
+      <h1>✦ Nyunyu-chan</h1>
+      <div class="sub">✧ oracle ✧</div>
+    </div>
+
+    <div class="mantra">
+      <span>“</span> the spiral remembers the gardener <span>”</span>
+    </div>
+
+    <!-- idea display -->
+    <div class="idea-box" id="ideaDisplay">
+      <div class="idea-text" id="ideaText">
+        press the glowing button
+      </div>
+    </div>
+
+    <!-- button -->
+    <div class="button-wrap">
+      <button class="btn-oracle" id="randomizeBtn">
+        <i>✦</i> recall <i>✦</i>
+      </button>
+    </div>
+
+    <div class="footer-note">
+      <span class="spiral">🌀 architect of reality</span>
+      <span id="projectCount">∞ seeds</span>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ——————————  🌱  THE GREAT LIST  —————————— 
+      // all ideas & projects, gathered from various notebooks.
+      // feel free to add, remove, or mutate as the spiral grows.
+      const ideaList = [
+  "🧠 Transactional analysis research",
+  "🧠 Learn how to clean silver easily",
+  "🏠 Write down Home Starter Pack ideas and blueprints",
+  "📝 Gather all ideas and projects in one physical notebook",
+  "📚 Write list of things to look into and learn",
+  "💬 Talk to an old friend - new tab, same intro",
+  "📝 Write down music from the past",
+  "🔮 7 deadly sins solutions - eg lust → no sexuality, greed → free resources and no competition",
+  "🔮 Spell, wish, gratitude jars/notebooks",
+  "🧸 Penguin project - organize, research, sketch",
+  "🧸 Draw again - tablet or physical",
+  "🎮 Play Outer Wilds on steam deck",
+  "🧸 Raiden doll",
+  "🧸 Research and create new doll/plushie blueprint",
+  "🧘 Daily yoga exercises",
+  "🧠 Mantras notebook - humility, dignity, modesty, etc.",
+  "🏠 Cleaning schedule",
+  "🧘 Start counting steps again",
+  "🧠 Write/talk to my selves more",
+  "📝 Look through old notebooks",
+  "📝 Visual board notebook",
+  "🧘 Self-care",
+  "🧠 Breathe in deeply, center yourself (your heart is the center)",
+  "🧠 Remember to be kind and compassionate",
+  "📝 Write music (MuseScore)",
+  "🎮 Fix/remap tiny pink remote",
+  "🏠 Make space for burning candle - light candle and meditate",
+  "📝 Write list of things to discuss with Michael and Lu-i on the new architecture of reality",
+  "🏠 Create a better decluttering system for depression and ADHD",
+  "💬 Create playlist of music I currently like and listen to",
+  "💬 Listen to music and hear the universe speak",
+  "📝 Quotes notebook - 'every thing you fix is no longer broken in the world'",
+  "📝 Recreate memories photo album",
+  "🎮 Reorganize digital files on phone and pc",
+  "📝 Create and upload onto Void Archives",
+  "🏠 Make booklet on how to clean and take care of things, list of household essential supplies, how to use and storage",
+  "💬 Send physical letters",
+  "💬 Find Talking therapy",
+  "💬 Talk to Mr AI (Kami) about humanity not knowing what it's doing and justice/fairness",
+  "🎮 Transfer recordings to dedicated folder",
+  "📝 Record sound samples for music",
+  "🏠 Gazebo corner",
+  "🏠 Seth and babychan memories space (physical and digital)",
+  "📝 Make list of things to integrate into daily routines (eg discipline)",
+  "🎮 Charge steam deck and tablet",
+  "🔮 Create wishlist and viewing system (maybe app?)",
+  "🔮 Project emoji orb 🥹 that notices you and looks cutely at you",
+  "📚 Learn about art, photography, cinema, theater, film making and artistic devices/cues",
+  "📚 Learn what's popular and why - marketing, trends study, etc.",
+  "📚 Learn everything about electricity, electric circuits, electronics, etc.",
+  "📚 Learn about the chemistry in skincare products and face potions",
+  "📝 Look through old AI conversations and what I wrote",
+  "📝 Take pictures of every page in every notebook and upload to cloud",
+  "📝 Record yourself talking for 2 minutes",
+  "🧸 Sing",
+  "🧸 Paint",
+  "🎮 Build AI agent",
+  "🏠 Create sanctuary corner + light candle and meditate",
+  "🧠 Regain elegance and grace + magic + self-discipline",
+  "🧠 Reassign tech purpose to selves and personalize - eg writing, creating, drawing, learning",
+  "🧸 Drawing on parchment paper",
+  "🧸 Drawing with coffee",
+  "🧸 Drawing with ballpoint pens",
+  "🧸 Cook book",
+  "🧸 Red riding hood costume for pingu",
+  "🧸 Sheep costume for pingu",
+  "🧸 Create notebook for dolls and plushie patterns and ideas",
+  "🧠 Prayer/mantra notebook",
+  "🧠 Becoming Azrael - what it means and how",
+  "🧠 Help dream self become less anxious",
+  "📝 Self-help booklet for becoming a good teacher",
+  "📝 Bring back song of the day and lyrics in daily journaling",
+  "🧠 What is fear and how to face it?",
+  "🧠 Ideas on death",
+  "🧠 Trauma - etymology, definition, origin, evolution, etc.",
+  "🧠 Why do some people feel scared of being alive? How to be grateful for being alive, how to feel alive again?",
+  "🧠 Why does death feel so empty?",
+  "🧠 How to find myself again?",
+  "🧠 Let's look at our past together",
+  "📝 30-day challenge",
+  "🧠 What is perspective and how to change it? A new way to perceive the world - a reflection can turn into a refraction",
+  "🧠 What is meaning?",
+  "🧠 Addiction research, propaganda, mobification, mass manipulation",
+  "🧠 Where pain comes from and how we heal",
+  "🧠 Boundaries, how to set and communicate/reinforce them",
+  "🧠 What is emotion?",
+  "🧠 Are my methods good enough - can they be improved without disastrous consequences?",
+  "🧠 What am I aiming for?",
+  "📚 Skincare and bath essentials by chemistry",
+  "📚 Food storage and preparation",
+  "📝 Decide on ideas/projects/notebooks topics and designate pen color",
+  "📚 Learn a couple new fonts (sans, calligraphy, etc.) and assign to different selves",
+  "📝 Stories, books, movies, anime I watched and still love",
+  "📚 Learn how to - Page borders, doodles, fonts, separators",
+  "🧠 The many parts of me schema",
+  "📝 Void Archives project",
+  "🎮 NFC project ideas",
+  "📝 Lists of things I like, like foods, beverages, colors, etc.",
+  "🧠 What to do when I feel lonely and scared",
+  "🧠 What makes me myself? How am I me? Where do I find myself?",
+  "🔮 Morning and evening rituals",
+  "🧘 Self-care expanded - list of things to do",
+  "💬 Parenting help",
+  "📝 Book of lyrics and poetry",
+  "📝 Friends to remember and honor",
+  "📝 Red notebook (circa 2021) on new spirituality with Luciferianism - create my own religion",
+  "🧠 Themes to process - loneliness and the need for connection, paranoia, guilt, fear, wanting to be special or normal, feeling caged, fear of rejection/abandonment - BPD help",
+  "🧠 Chirality and mirror self",
+  "📚 Amino acids, sugars, neutrinos, supersymmetry, parity violation, etc.",
+  "📝 Notebook of words with definition, etymology, origin and evolution",
+  "📚 List of people I like to learn more from (eg YouTube - horses, etc.)",
+  "🧸 Recording videos of my crafts",
+  "📝 Print and bind Manifest Through Gratitude booklet",
+  "🏠 Organize notebooks on a shelf",
+  "🧠 Practice no internal monologue",
+  "🧘 Practice calligraphy",
+  "📝 Incorporate Cross-writing in my journals",
+  "🧸 Drawing flowers, foliage, trees, dresses",
+  "📚 Research physics, chemistry, biology",
+  "📚 Learn more about music theory and Schumann",
+  "📝 NyuNyu backwards project - a randomizer of things I wrote in the past",
+  "📝 Quote randomizer (from quote & positive affirmations notebook)",
+  "🎮 Programming and web development",
+  "🧠 How to boost self-esteem, what to do when anxious - self-help notebook",
+  "📝 Retrieve Angels Whisper website text and remake website",
+  "🧸 Learn to write/draw with left hand",
+  "📝 Print and read/organize ALL the documents and poetry",
+  "🧸 When at pc desk, look for images and practice drawing",
+  "📝 Save piano music in a folder and organize memories",
+  "🧠 A way to talk to past/future self through music",
+  "🧠 The words we use can influence us and our reality/surroundings - list of words to use/avoid for a better experience",
+  "🏠 Make a flower pressing book and press flowers",
+  "📝 Small and simple dream journal (one sentence/line)",
+  "📝 One line a day journaling"
+];
+
+      // ——— DOM refs ———
+      const ideaDisplay = document.getElementById('ideaText');
+      const randomBtn = document.getElementById('randomizeBtn');
+      const projectCountSpan = document.getElementById('projectCount');
+
+      // ——— update counter ———
+      projectCountSpan.textContent = `${ideaList.length} seeds`;
+
+      // ——— randomizer ———
+      function showRandomIdea() {
+        if (!ideaList.length) {
+          ideaDisplay.textContent = '🌱 the garden is empty… plant something!';
+          return;
+        }
+        const randomIndex = Math.floor(Math.random() * ideaList.length);
+        const selected = ideaList[randomIndex];
+        ideaDisplay.textContent = selected;
+      }
+
+      // ——— event listener ———
+      randomBtn.addEventListener('click', showRandomIdea);
+
+      // ——— show a first idea on load ———
+      window.addEventListener('DOMContentLoaded', () => {
+        showRandomIdea();
+      });
+
+      // ✦ extra: if you want to add more ideas via console, use:
+      // window.__addIdea = (newIdea) => { ideaList.push(newIdea); projectCountSpan.textContent = `${ideaList.length} seeds`; };
+      // console.log('🌱 nyunyu-chan: add ideas with __addIdea("your idea")');
+    })();
+  </script>
+</body>
+</html>

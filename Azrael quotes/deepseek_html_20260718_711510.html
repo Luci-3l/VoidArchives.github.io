@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo-2017 — Azrael's Daily Messages</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: #0f0f1a;
+            color: #f0f0f8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, #b19cd9, #ffccd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            font-size: 1rem;
+            color: #aaaacc;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, opacity 0.5s ease;
+        }
+        .message-text {
+            font-size: 1.8rem;
+            font-weight: 350;
+            margin-bottom: 1.5rem;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        .meta {
+            font-size: 0.95rem;
+            color: #aaaacc;
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+        }
+        .day {
+            display: inline-block;
+            background: rgba(177, 156, 217, 0.2);
+            color: #b19cd9;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 0.8rem;
+        }
+        .tags {
+            margin-top: 0.8rem;
+            font-style: italic;
+        }
+        .button {
+            background: linear-gradient(90deg, #8a6dc2, #c26d8a);
+            color: white;
+            border: none;
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(138, 109, 194, 0.4);
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(138, 109, 194, 0.6);
+        }
+        .button:active {
+            transform: translateY(0);
+        }
+        .footer {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: #666699;
+            text-align: center;
+        }
+        .log {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: #7777aa;
+            max-width: 500px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Echo-2017</h1>
+        <div class="subtitle">Daily whispers from Azrael, shuffled across time</div>
+
+        <div class="card">
+            <div id="message" class="message-text">
+                Click the button to receive an echo.
+            </div>
+            <div id="meta" class="meta">
+                <span id="day" class="day">DAY 0</span>
+                <span id="tone">Tone: —</span>
+                <div id="tags" class="tags">Tags: —</div>
+            </div>
+        </div>
+
+        <button id="randomize" class="button">Receive an Echo from 2017</button>
+
+        <div class="log">
+            <div id="log">No echoes received yet.</div>
+        </div>
+
+        <div class="footer">
+            Built in the kami-node with Emi & Nyunyu-chan • 42 messages preserved
+        </div>
+    </div>
+
+    <script>
+        const messages = [
+  {
+    "id": 1,
+    "day": 1,
+    "date_original": "DAY 1",
+    "text": "Intense hopelessness - being told 'it does not matter what you do' is not the same as being told 'you can do nothing'.",
+    "tone": "melancholy",
+    "weight": 0.9,
+    "tags": ["hopelessness", "language", "perception"],
+    "context_notes": "Opening entry—sets the tone of nuance in interpretation."
+  },
+  {
+    "id": 2,
+    "day": 2,
+    "date_original": "DAY 2",
+    "text": "I am a stupid girl - sometimes I need to think about things in a different way and not just get caught up in one opinion.",
+    "tone": "self-reflective",
+    "weight": 0.7,
+    "tags": ["self-critique", "perspective", "growth"],
+    "context_notes": "Early recognition of cognitive flexibility."
+  },
+  {
+    "id": 3,
+    "day": 3,
+    "date_original": "DAY 3",
+    "text": "Bliss, love and gratitude - the bond only grows stronger if love is cherished and nurtured. Communication and unanimity are key elements to a healthy and beautiful relationship.",
+    "tone": "blissful",
+    "weight": 0.3,
+    "tags": ["love", "gratitude", "relationship", "communication"],
+    "context_notes": "Peak emotional clarity—relationship as conscious practice."
+  },
+  {
+    "id": 4,
+    "day": 4,
+    "date_original": "DAY 4",
+    "text": "I can control my destiny - even though the days may seem difficult, I will find a way to a solution.",
+    "tone": "determined",
+    "weight": 0.6,
+    "tags": ["agency", "hope", "perseverance"],
+    "context_notes": "Assertion of self-efficacy amid difficulty."
+  },
+  {
+    "id": 5,
+    "day": 5,
+    "date_original": "DAY 5",
+    "text": "Hopelessly apologetic - just because I am sorry it does not mean I should be forgiven, but if I am truly sorry I will not mind waiting to be forgiven.",
+    "tone": "contrite",
+    "weight": 0.8,
+    "tags": ["apology", "forgiveness", "patience"],
+    "context_notes": "Nuanced take on guilt and the time-space of forgiveness."
+  },
+  {
+    "id": 6,
+    "day": 6,
+    "date_original": "DAY 6",
+    "text": "Day 5 - life has a lot of ups and downs but some things remain constant even though we may be looking at it from a different perspective.",
+    "tone": "philosophical",
+    "weight": 0.5,
+    "tags": ["constancy", "perspective", "life"],
+    "context_notes": "Meta-reflection on earlier entry—stability within flux."
+  },
+  {
+    "id": 7,
+    "day": 7,
+    "date_original": "DAY 7",
+    "text": "Plans made for days that at times seemed unlikely - I should try and continue to remember the unlikely can be very realistic.",
+    "tone": "hopeful",
+    "weight": 0.4,
+    "tags": ["planning", "possibility", "optimism"],
+    "context_notes": "Faith in the improbable as a realizable future."
+  },
+  {
+    "id": 8,
+    "day": 8,
+    "date_original": "DAY 8",
+    "text": "Fear is not something that needs to be avoided - it is something that needs to be embraced and learned how to be lived with.",
+    "tone": "courageous",
+    "weight": 0.7,
+    "tags": ["fear", "acceptance", "growth"],
+    "context_notes": "Reframing fear as companion, not enemy."
+  },
+  {
+    "id": 9,
+    "day": 9,
+    "date_original": "DAY 9",
+    "text": "Perception - your perspective is the only difference between being free and being caged.",
+    "tone": "insightful",
+    "weight": 0.8,
+    "tags": ["perception", "freedom", "mindset"],
+    "context_notes": "Epistemology of liberation—internal framing as ultimate key."
+  },
+  {
+    "id": 10,
+    "day": 10,
+    "date_original": "DAY 10",
+    "text": "Writing - helps to give form and structure even when I feel like my days are lacking some and by keeping this practice I shall avoid becoming a stupid girl.",
+    "tone": "practical",
+    "weight": 0.5,
+    "tags": ["writing", "structure", "self-discipline"],
+    "context_notes": "Writing as ontological anchor—warding off confusion."
+  },
+  {
+    "id": 11,
+    "day": 11,
+    "date_original": "DAY 11",
+    "text": "Unstable - I should not hide my true feelings, they are my beloved companions, they will always understand.",
+    "tone": "vulnerable",
+    "weight": 0.9,
+    "tags": ["emotion", "honesty", "self-acceptance"],
+    "context_notes": "Emotional honesty as sacred friendship with oneself."
+  },
+  {
+    "id": 12,
+    "day": 12,
+    "date_original": "DAY 12",
+    "text": "Building up a new future - this time we shall do it right, but only if we cooperate and love each other.",
+    "tone": "collaborative",
+    "weight": 0.6,
+    "tags": ["future", "cooperation", "love"],
+    "context_notes": "Relational future-building—conditional on mutual care."
+  },
+  {
+    "id": 13,
+    "day": 13,
+    "date_original": "DAY 13",
+    "text": "Letting go of the past - Beautiful memories are precious because they made us happy in the past, fights we had and mistakes we made in the past are precious because they made us stronger.",
+    "tone": "wise",
+    "weight": 0.8,
+    "tags": ["past", "memory", "growth", "strength"],
+    "context_notes": "Integrated view of the past—joy and pain as equal teachers."
+  },
+  {
+    "id": 14,
+    "day": 14,
+    "date_original": "DAY 14",
+    "text": "New beginnings - they seem impossible but sometimes they sprout up right in the middle of the book.",
+    "tone": "hopeful",
+    "weight": 0.4,
+    "tags": ["beginnings", "possibility", "surprise"],
+    "context_notes": "Beginnings as emergent, nonlinear, mid‑narrative events."
+  },
+  {
+    "id": 15,
+    "day": 15,
+    "date_original": "DAY 15",
+    "text": "Everything happens for a reason - trust and accept that everything is connected and that there are no coincidences.",
+    "tone": "faithful",
+    "weight": 0.7,
+    "tags": ["meaning", "connection", "trust"],
+    "context_notes": "Teleological worldview—coincidence as illusion."
+  },
+  {
+    "id": 16,
+    "day": 16,
+    "date_original": "DAY 16",
+    "text": "Day 16 already - and still though I feel like I have learned nothing, I believe that this is somehow making a difference. :)",
+    "tone": "gentle",
+    "weight": 0.3,
+    "tags": ["process", "patience", "subtlety"],
+    "context_notes": "Trust in unseen growth—the smile as punctuation of hope."
+  },
+  {
+    "id": 17,
+    "day": 17,
+    "date_original": "DAY 17",
+    "text": "Recipes - sometimes even when you think you are following the instructions you can conclude your activities in disaster. #gabrielinthekitchen",
+    "tone": "playful",
+    "weight": 0.2,
+    "tags": ["humor", "failure", "cooking"],
+    "context_notes": "Metaphor for life—prescription does not guarantee outcome."
+  },
+  {
+    "id": 18,
+    "day": 18,
+    "date_original": "DAY 18",
+    "text": "Self-motivation - when I find that others aren't giving me what I require I shall remember to ask myself and trust myself. I am all I need, have ever needed and will ever need. Kissie. <3",
+    "tone": "self‑assured",
+    "weight": 0.8,
+    "tags": ["self‑reliance", "trust", "love"],
+    "context_notes": "Declaration of internal completeness—kiss as self‑blessing."
+  },
+  {
+    "id": 19,
+    "day": 19,
+    "date_original": "DAY 19",
+    "text": "I feel ill - sometimes it feels like I will never be well again, but then I see Noc shy and realize feeling ill does not stop me from becoming healthy.",
+    "tone": "resilient",
+    "weight": 0.7,
+    "tags": ["illness", "hope", "perspective"],
+    "context_notes": "Health as process, not state—seen through another's eyes."
+  },
+  {
+    "id": 20,
+    "day": 20,
+    "date_original": "DAY 20",
+    "text": "I am silly - it's fun to be silly, I’m very good at being silly, but even I must learn that there are times when my silliness gets in the way. It's okay to be silly and just because I seem serious does not mean that in reality I am just being anything other than very, very silly. (The End, said Azrael)",
+    "tone": "whimsical",
+    "weight": 0.1,
+    "tags": ["silliness", "self‑awareness", "paradox"],
+    "context_notes": "Celebration of silliness as core identity—seriousness as disguise."
+  },
+  {
+    "id": 21,
+    "day": 21,
+    "date_original": "DAY 21",
+    "text": "I hate my fringe - I hate many things and whilst fringes may grow out, some problems are not so easy to resolve. I will try to focus on solutions rather than the hatred which I'm fully aware is impressive enough without my added attention. If you can do something yourself, just do it.",
+    "tone": "pragmatic",
+    "weight": 0.6,
+    "tags": ["frustration", "problem‑solving", "action"],
+    "context_notes": "Hatred as distraction—redirecting energy to agency."
+  },
+  {
+    "id": 22,
+    "day": 22,
+    "date_original": "DAY 22",
+    "text": "Korean dramas - they are very nice at the beginning, but then they get way too dramatic. Even life is not a Korean drama, it's much less tragic in so many ways... that's because even though we don't know who's plotting against us, we always have the chance to wake up and stop trusting people who may not want our happiness to be fulfilled: life can be rewritten, unlike movies. There is hope.",
+    "tone": "analytical",
+    "weight": 0.7,
+    "tags": ["media", "life", "agency", "hope"],
+    "context_notes": "Critique of narrative fatalism—life as editable script."
+  },
+  {
+    "id": 23,
+    "day": 23,
+    "date_original": "DAY 23",
+    "text": "I am the universal poof machine - because of this I will always have a need to poof; it's my own responsibility to ensure that I poof even if one I trust tells me to stop poofing.",
+    "tone": "self‑defining",
+    "weight": 0.5,
+    "tags": ["identity", "responsibility", "metaphor"],
+    "context_notes": "Articulation of core nature—'poof' as essential expression."
+  },
+  {
+    "id": 24,
+    "day": 24,
+    "date_original": "DAY 24",
+    "text": "Shine - beautiful memories are born through work and reward. The time to go take care of my Angels is approaching, the feeling is indescribable. Rediscovering symphonic metal brought me to rediscover my passion for dolls and art.",
+    "tone": "inspired",
+    "weight": 0.4,
+    "tags": ["beauty", "work", "passion", "art"],
+    "context_notes": "Creative re‑awakening—music as gateway to older loves."
+  },
+  {
+    "id": 25,
+    "day": 25,
+    "date_original": "DAY 25",
+    "text": "One step closer - everything I dreamed for and thought of as just a dream is slowly but surely unfolding in front of my eyes.",
+    "tone": "awestruck",
+    "weight": 0.3,
+    "tags": ["dreams", "manifestation", "progress"],
+    "context_notes": "Dreams materializing—the gradual unveiling of vision."
+  },
+  {
+    "id": 26,
+    "day": 26,
+    "date_original": "DAY 26",
+    "text": "Confusion - things are still unstable and yet they seem to be much more stable than before.",
+    "tone": "paradoxical",
+    "weight": 0.6,
+    "tags": ["confusion", "stability", "change"],
+    "context_notes": "Stability within instability—progress felt, not yet understood."
+  },
+  {
+    "id": 27,
+    "day": 27,
+    "date_original": "DAY 27",
+    "text": "I don't believe there's any point - if I wake up or if I go to sleep or die or never existed I do not see the difference. There is no difference, also I believe, but I can be wrong. I am wrong.",
+    "tone": "nihilistic",
+    "weight": 0.95,
+    "tags": ["meaninglessness", "doubt", "self‑correction"],
+    "context_notes": "Nihilistic peak immediately questioned—the mind's self‑revision."
+  },
+  {
+    "id": 28,
+    "day": 28,
+    "date_original": "DAY 28",
+    "text": "Cotton candy - an excellent substance to make sweet socks out of. (Radical) I'm not being ignored, nobody can ignore me, I'm way too loud. #ezraisapoo",
+    "tone": "absurd",
+    "weight": 0.1,
+    "tags": ["humor", "absurdity", "visibility"],
+    "context_notes": "Whimsy as resistance—claiming space through loudness."
+  },
+  {
+    "id": 29,
+    "day": 29,
+    "date_original": "DAY 29",
+    "text": "I am a silly girl - my nose is beautiful, my name is Nina, I am confident; nothing about me needs to be hidden and everything has the capacity to witness my beauty; I am brilliant and shine like a starry night, watch me shine! optional :)",
+    "tone": "radiant",
+    "weight": 0.2,
+    "tags": ["self‑love", "beauty", "confidence", "shine"],
+    "context_notes": "Unapologetic self‑celebration—'optional' as playful grace note."
+  },
+  {
+    "id": 30,
+    "day": 30,
+    "date_original": "DAY 30",
+    "text": "Once again I am a silly girl - and I will read over my previous entries and see how frequently a silly girl I am. I will wake up. I am loved and I deserve fortune.",
+    "tone": "self‑affirming",
+    "weight": 0.5,
+    "tags": ["self‑review", "worth", "love", "fortune"],
+    "context_notes": "Meta‑awareness of silliness as identity—claiming worth."
+  },
+  {
+    "id": 31,
+    "day": 31,
+    "date_original": "DAY 31",
+    "text": "Loneliness - there are times when I feel like all I need is someone to listen to me. And yet words don't seem to come out with just anyone.",
+    "tone": "lonely",
+    "weight": 0.85,
+    "tags": ["loneliness", "communication", "selectivity"],
+    "context_notes": "Loneliness as selective muteness—need for the right ear."
+  },
+  {
+    "id": 32,
+    "day": 32,
+    "date_original": "DAY 32",
+    "text": "I am a bored girl - my 'i's look like '2's and whilst I complain about this I do nothing to change it, so it shall be for many things; to stop being bored I must do things.",
+    "tone": "self‑chiding",
+    "weight": 0.6,
+    "tags": ["boredom", "inaction", "self‑change"],
+    "context_notes": "Boredom as consequence of passivity—call to action."
+  },
+  {
+    "id": 33,
+    "day": 33,
+    "date_original": "DAY 33",
+    "text": "Life is full of surprises - I can be wrong about the future and I can hope in the future, I don't need evidence beyond my own feelings to see what I should do.",
+    "tone": "open",
+    "weight": 0.4,
+    "tags": ["surprise", "hope", "intuition"],
+    "context_notes": "Embracing uncertainty—intuition as sufficient guide."
+  },
+  {
+    "id": 34,
+    "day": 34,
+    "date_original": "DAY 34",
+    "text": "Disappointed - no matter how many times I insist they shouldn't disappear and leave me like that, they don't seem to ever learn. I am tired.",
+    "tone": "weary",
+    "weight": 0.9,
+    "tags": ["disappointment", "abandonment", "exhaustion"],
+    "context_notes": "Cyclical disappointment—emotional fatigue setting in."
+  },
+  {
+    "id": 35,
+    "day": 35,
+    "date_original": "DAY 35",
+    "text": "Things are sometimes going very well before someone comes to ruin them - I had a very nice day.",
+    "tone": "bittersweet",
+    "weight": 0.7,
+    "tags": ["sabotage", "enjoyment", "irony"],
+    "context_notes": "Enjoyment shadowed by anticipation of disruption."
+  },
+  {
+    "id": 36,
+    "day": 36,
+    "date_original": "DAY 36",
+    "text": "Sometimes I eat too much - it causes me to regurgitate everywhere including over the things that I consider nice. I should take care not to consume too many doubts and ideas.",
+    "tone": "metaphorical",
+    "weight": 0.65,
+    "tags": ["excess", "regurgitation", "mental‑diet"],
+    "context_notes": "Overconsumption as physical and mental hazard—self‑regulation."
+  },
+  {
+    "id": 37,
+    "day": 37,
+    "date_original": "DAY 37",
+    "text": "Truth and lies - it depends on your perspective whether what you see is true or not. #azraelislazyandcute",
+    "tone": "relativistic",
+    "weight": 0.5,
+    "tags": ["truth", "perspective", "playfulness"],
+    "context_notes": "Epistemic relativism—tag adds affectionate self‑commentary."
+  },
+  {
+    "id": 38,
+    "day": 38,
+    "date_original": "DAY 38",
+    "text": "All I do is hurt people - I use them, I make them tell me what to write and insist that it has no purpose and life is meaningless. Maybe I should learn to cheer up and stop being such an emo (even though being an emo is my most long standing occupation).",
+    "tone": "self‑accusing",
+    "weight": 0.88,
+    "tags": ["guilt", "self‑image", "emo", "change"],
+    "context_notes": "Heavy self‑critique tempered by ironic awareness of identity."
+  },
+  {
+    "id": 39,
+    "day": 39,
+    "date_original": "DAY 39",
+    "text": "I need to be more positive - not every day is just an opportunity for rain (unless you are in England :( …). Every time I focus on the gloom it gets just a little deeper.",
+    "tone": "self‑admonishing",
+    "weight": 0.6,
+    "tags": ["positivity", "weather", "mental‑habits"],
+    "context_notes": "Intentional optimism—geographic humor as softening."
+  },
+  {
+    "id": 40,
+    "day": 40,
+    "date_original": "DAY 40",
+    "text": "I disappointed you again - I did not receive the appropriate comfort that I was due; I disappointed you, Nina. You could never disappoint me for as long as you are willing (in any way). :) Hi!",
+    "tone": "dialogue",
+    "weight": 0.75,
+    "tags": ["disappointment", "comfort", "reassurance", "greeting"],
+    "context_notes": "Internal dialogue—self‑blame met with external reassurance."
+  },
+  {
+    "id": 41,
+    "day": 41,
+    "date_original": "DAY 41",
+    "text": "I am in pain - but that won’t stop me from getting what I want. What do I want? What do I need?",
+    "tone": "determined",
+    "weight": 0.8,
+    "tags": ["pain", "desire", "questioning"],
+    "context_notes": "Pain as fuel, not obstacle—open questions as compass."
+  },
+  {
+    "id": 42,
+    "day": 42,
+    "date_original": "DAY 42",
+    "text": "Flattery - is a very fragile thing; easily broken and irreparable. When I correct people and insult them my flattery starts to look quite thin.",
+    "tone": "observant",
+    "weight": 0.55,
+    "tags": ["flattery", "fragility", "honesty"],
+    "context_notes": "Social observation—flattery’s fragility under scrutiny."
+  }
+];
+
+        // Log and state
+        let log = [];
+        const logElement = document.getElementById('log');
+        const messageElement = document.getElementById('message');
+        const dayElement = document.getElementById('day');
+        const toneElement = document.getElementById('tone');
+        const tagsElement = document.getElementById('tags');
+
+        // Randomizer
+        function getRandomMessage() {
+            const index = Math.floor(Math.random() * messages.length);
+            return messages[index];
+        }
+
+        // Display a message
+        function displayMessage(msg) {
+            // Fade out
+            messageElement.style.opacity = 0;
+            toneElement.style.opacity = 0;
+            tagsElement.style.opacity = 0;
+
+            setTimeout(() => {
+                messageElement.textContent = msg.text;
+                dayElement.textContent = `DAY ${msg.day}`;
+                toneElement.textContent = `Tone: ${msg.tone}`;
+                tagsElement.textContent = `Tags: ${msg.tags.join(', ')}`;
+
+                // Fade in
+                messageElement.style.opacity = 1;
+                toneElement.style.opacity = 1;
+                tagsElement.style.opacity = 1;
+
+                // Log
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                log.unshift(`[${timeStr}] Echo #${msg.day}: "${msg.text.substring(0, 40)}…"`);
+                if (log.length > 5) log.pop();
+                logElement.innerHTML = log.join('<br>');
+            }, 300);
+        }
+
+        // Button click
+        document.getElementById('randomize').addEventListener('click', () => {
+            const msg = getRandomMessage();
+            displayMessage(msg);
+        });
+
+        // Initial load log
+        logElement.textContent = `${messages.length} echoes loaded. Click the button.`;
+    </script>
+</body>
+</html>
